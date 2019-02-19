@@ -1,5 +1,7 @@
-def dot_product(inputs, weights):
-    return sum([i * w for i, w in zip(inputs, weights)])
+import operator
+
+from .shared import dot_product
+
 
 def predict(inputs, weights):
     # weights[0] == bias
@@ -10,17 +12,18 @@ def predict(inputs, weights):
 
 def train_weights(train, learning_rate, n_epoch):
     weights = [0.0] * len(train[0])
+    targets = list(map(operator.itemgetter(2), train))
+    costs = []
     for epoch in range(n_epoch):
-        total_error = 0.0
-        for row in train:
-            prediction = predict(row, weights)
-            error = row[-1] - prediction
-            total_error += error ** 2
-            # New bias
-            weights[0] = weights[0] + learning_rate * error
-            weights[1:] = [ weight + learning_rate * error * input_ for weight, input_ in zip(weights[1:], row)]
+        predictions = [predict(inputs, weights) for inputs in train]
+        errors = [target - prediction for prediction, target in zip(predictions, targets)]
+        weights[0] += learning_rate * sum(errors)
+        inputs_T = zip(*train[:-1])
+        weight_deviations = [ dot_product(input_, errors) for input_ in inputs_T]
+        weights[1:] = [ weight + learning_rate * error for weight, error in zip(weights[1:], weight_deviations) ]
+        cost = sum(error ** 2 for error in errors)
+        costs.append(cost)
 
-        print('>epoch=%d, lrate=%.3f, error=%.3f' % (epoch, learning_rate, total_error))
     return weights
 
 dataset = [

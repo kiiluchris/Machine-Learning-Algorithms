@@ -1,4 +1,10 @@
-from shared import dot_product
+from .shared import dot_product
+
+
+def gradient_descent(dataset, weights):
+    return (1.0 if weights[0] + dot_product(row, weights[1:]) >= 0.0 else 0.0  for row in dataset )
+    
+activation_function = gradient_descent
 
 def predict(inputs, weights):
     # weights[0] == bias
@@ -14,7 +20,7 @@ def train_weights(train, learning_rate, n_epoch):
         for row in train:
             prediction = predict(row, weights)
             error = row[-1] - prediction
-            total_error += error ** 2
+            total_error += error
             # New bias
             weights[0] = weights[0] + learning_rate * error
             weights[1:] = [ weight + learning_rate * error * input_ for weight, input_ in zip(weights[1:], row)]
