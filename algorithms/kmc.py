@@ -37,7 +37,7 @@ def new_centroids(k, vals):
 def KMC(data, k):
     oldGroups = []
     groups = []
-    counter = 10
+    counter = 100
     centroids = data[:k]
     group_data_as_dict = setup_grouper(data)
     centroid_mapper = partial(new_centroids, k)
@@ -52,3 +52,21 @@ def KMC(data, k):
         counter -= 1
     
     return list(groupedData)
+
+
+from .shared import wheat_seeds_csv
+def main():
+    datasets = [row[:-1] for row  in wheat_seeds_csv(__file__)]
+    res = KMC(datasets, 5)
+    res = KMC([
+        [2,3], 
+        [4,5],
+        [1,3],
+        [3,7]
+    ], 2)
+
+    print(res, len(res))
+
+
+if __name__ == "__main__":
+    main()

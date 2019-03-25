@@ -22,6 +22,9 @@ marginal_prob =  [[
     car_ / all_totals for car_ in cars
     ] for cars in all_cars]
 
-
+SUNNY, OVERC, RAINY
+[
+    []
+]
 
 print(marginal_prob)

@@ -2,7 +2,7 @@ from .shared import dot_product
 
 
 def gradient_descent(dataset, weights):
-    return (1.0 if weights[0] + dot_product(row, weights[1:]) >= 0.0 else 0.0  for row in dataset )
+    return (float(weights[0] + dot_product(row, weights[1:]) >= 0.0) for row in dataset )
     
 activation_function = gradient_descent
 
