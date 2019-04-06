@@ -2,6 +2,7 @@ import csv
 import math
 import os
 from math import sqrt
+from operator import itemgetter
 from functools import reduce, partial
 from pathlib import Path
 
@@ -9,6 +10,13 @@ DATASET_DIR = Path(__file__).parent.joinpath('./datasets')
 
 def transpose(*arrs): 
     return zip(*arrs)
+
+
+def most_common(xs, default=-1):
+    counts = {}
+    for x in xs:
+        counts[x] = 1 + counts.get(x, 0)
+    return max(counts.items(), key=itemgetter(1), default=[default])[0]
 
 def EuclidianDist(*points):
     squaredDist = reduce(lambda acc, p : acc + pow(p[0] - p[1], 2), points, 0)

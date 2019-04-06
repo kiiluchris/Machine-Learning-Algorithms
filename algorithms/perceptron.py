@@ -1,17 +1,13 @@
 from shared import dot_product
 
 
-def gradient_descent(dataset, weights):
-    return (float(weights[0] + dot_product(row, weights[1:]) >= 0.0) for row in dataset )
-    
-activation_function = gradient_descent
 
 def predict(inputs, weights):
     # weights[0] == bias
     # activation = bias + sum(x_i * w_i)
     bias = weights[0]
     activation = dot_product(inputs, weights[1:]) + bias
-    return float(activation >= 0.0)
+    return int(activation >= 0.0)
 
 def train_weights(dataset, learning_rate, n_epoch):
     weights = [0.0] * len(dataset[0])
@@ -25,7 +21,7 @@ def train_weights(dataset, learning_rate, n_epoch):
             weights[0] = weights[0] + learning_rate * error
             weights[1:] = [ weight + learning_rate * error * input_ for weight, input_ in zip(weights[1:], row)]
 
-        print('>epoch=%d, lrate=%.3f, error=%.3f' % (epoch, learning_rate, total_error))
+        # print('>epoch=%d, lrate=%.3f, error=%.3f' % (epoch, learning_rate, total_error))
     return weights
 
 dataset = [
@@ -46,4 +42,4 @@ n_epoch = 200
 weights = train_weights(dataset, learning_rate, n_epoch)
 
 for row in dataset:
-    print(predict(row, weights))
+    print(f'Expected: {row[-1]} Actual: {predict(row, weights)}')

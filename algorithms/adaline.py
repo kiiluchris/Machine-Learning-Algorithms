@@ -89,7 +89,7 @@ for i, row in enumerate(dataset):
     denormalized_prediction = denormalize_col(prediction, minmax[label_index])
     predicted_class = get_closest(labels, norm_labels, denormalized_prediction)
     target = o_targets[i]
-    print(f"Expected: {target} Output: {predicted_class}\n")
+    print(f"Expected: {target} Output: {predicted_class}")
     res["predictions"].append({
         "val": predicted_class,
         "expected": target,

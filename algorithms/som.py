@@ -13,16 +13,15 @@ import json
 import math
 import random
 
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
-from operator import itemgetter
 
 import numpy as np
 import matplotlib.pyplot as plt
 
 from shared import (
     ManhattanDist, 
-    get_csv_dataset
+    get_csv_dataset,
+    most_common
 )
 
 
@@ -40,14 +39,6 @@ def closest_node(row, map_, rows, cols):
                 res = (r, c)
 
     return res
-
-def most_common(lst, n=3):
-    # lst is a list of values 0 . . n
-    if len(lst) == 0: return -1
-    counts = np.zeros(shape=n, dtype=np.int)
-    for i in range(len(lst)):
-        counts[lst[i]] += 1
-    return np.argmax(counts)
     
 
 def update_map(row, map_, rows, cols, bmu_indices, current_learning_rate, current_radius):
@@ -66,6 +57,8 @@ def construct_som(data_x, rows, cols, max_learning_rate, n_epochs, num_inputs):
         # Print if iteration is a multiple of 10
         if i % (n_epochs / 10) == 0:
             print(f"{i} epochs done", flush=True)
+
+        # Decay
         pct_left = 1.0 - (i / n_epochs)
         current_radius = int(pct_left * max_radius)
         current_learning_rate = pct_left * max_learning_rate
@@ -121,24 +114,28 @@ def dimensionality_reduction_visualization(map_, u_matrix, data_x, data_y, rows,
     label_map = np.zeros(shape=(rows,cols), dtype=np.int)
     for i in range(rows):
         for j in range(cols):
-            label_map[i][j] = most_common(mapping[i][j], 3)
+            label_map[i][j] = most_common(mapping[i][j])
 
     plt.figure(2)
     plt.imshow(label_map, cmap=plt.cm.get_cmap('terrain_r', 4))
     plt.colorbar()
 
+def load_dataset(dataset_name, input_indices):
+    file_path = Path(__file__).parent / f"./datasets/{dataset_name}.csv"
+    num_inputs = len(input_indices)
+    data_x = np.loadtxt(file_path.as_posix(), delimiter=",", usecols=input_indices,
+        dtype=np.float64)
+    data_y = np.loadtxt(file_path.as_posix(), delimiter=",", usecols=[num_inputs],
+        dtype=np.int)
+
+    return data_x, data_y, num_inputs
 
 def main():
-    # dataset = get_dataset()
-    # data_y = np.array(map(lambda row: int(row[-1]), dataset))
     np.random.seed(1)
     # Define som dimensions
     rows, cols = 30, 30
-    file_path = Path(__file__).parent / "./datasets/iris-data.csv"
-    data_x = np.loadtxt(file_path.as_posix(), delimiter=",", usecols=range(0,4),
-        dtype=np.float64)
-    data_y = np.loadtxt(file_path.as_posix(), delimiter=",", usecols=[4],
-        dtype=np.int)
+    # data_x, data_y, num_inputs = load_dataset('iris-data', range(4))
+    data_x, data_y, num_inputs = load_dataset('wheat-seeds', range(7))
     map_ = construct_som(
         data_x=data_x,
         rows=rows,
@@ -146,19 +143,12 @@ def main():
         max_learning_rate=0.5,
         n_epochs=1000,
         # n_epochs=5000,
-        num_inputs=4
+        num_inputs=num_inputs
     )
     u_matrix = construct_u_matrix(map_, rows, cols)
     display_umatrix(u_matrix)
     dimensionality_reduction_visualization(map_, u_matrix, data_x, data_y, rows, cols)
     plt.show()
 
-    # with ThreadPoolExecutor(max_workers=2) as pool:
-    #     tasks = [
-    #         pool.submit(display_umatrix, u_matrix),
-    #         pool.submit(dimensionality_reduction_visualization, map_, u_matrix, data_x, data_y, rows, cols)
-    #     ]
-    #     for f in as_completed(tasks):
-    #         f.result()    
 if __name__ == "__main__":
     main()
