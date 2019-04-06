@@ -1,3 +1,4 @@
+import json
 import math
 from shared import get_csv_dataset_text
 
@@ -99,5 +100,4 @@ def make_decision(dataset, headers, root_class_header):
 
 headers, *dataset = get_csv_dataset_text('golf-play')
 tree = make_decision(dataset, headers, headers[-1])
-import json
 print(json.dumps(tree, indent=True))

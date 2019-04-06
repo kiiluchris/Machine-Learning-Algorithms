@@ -1,5 +1,5 @@
 import operator
-from shared import EuclidianDist, transpose
+from shared import EuclidianDist, transpose, get_csv_dataset
 
 from functools import reduce, partial
 
@@ -61,7 +61,6 @@ def KMC(data, k):
     return list(groupedData)
 
 
-from shared import get_csv_dataset
 def main():
     dataset = [row[:-1] for row  in get_csv_dataset('wheat-seeds')]
     clusters = KMC(dataset, 5)
