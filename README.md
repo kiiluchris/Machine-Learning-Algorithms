@@ -28,7 +28,10 @@ Run one of the algorithms using python
 
 `python knn.py`
 
-Expected output using the wheat seeds dataset: 
+Data Used: 
+- [Wheat seeds dataset](datasets/wheat-seeds.csv)
+
+Expected Output: 
 
     Query: [40, 23]
     Label: 2.0
@@ -37,7 +40,10 @@ Expected output using the wheat seeds dataset:
 
 `python kmc.py`
 
-Expected output using the wheat seeds dataset:
+Data Used: 
+- [Wheat seeds dataset](datasets/wheat-seeds.csv)
+
+Expected Output:
  
     Dataset length:  210
     Num of clusters (k): 5
@@ -52,7 +58,13 @@ Expected output using the wheat seeds dataset:
 
 `python perceptron.py`
 
-Expected Output using custom dataset: 
+Data used:
+- A 10 x 3 matrix with two columns of inputs and targets as 
+    
+        [0, 0, 0, 0, 0, 1, 1, 1, 1, 1 ]
+
+
+Expected Output: 
 
     Expected: 0 Actual: 0
     Expected: 0 Actual: 0
@@ -68,6 +80,12 @@ Expected Output using custom dataset:
 ### Adaline
 
 `python adaline.py`
+
+Data used:
+- A 10 x 3 matrix with two columns of inputs and targets as 
+    
+        [0, 0, 0, 0, 0, 1, 1, 1, 1, 1 ]
+- Uncomment to use: [Wheat seeds dataset](datasets/wheat-seeds.csv)
 
 Expected Output: 
 
@@ -86,6 +104,12 @@ Expected Output:
 
 `python backpropagation.py`
 
+Data used:
+- A 10 x 3 matrix with two columns of inputs and targets as 
+    
+        [0, 0, 0, 0, 0, 1, 1, 1, 1, 1 ]
+- Uncomment to use: [Wheat seeds dataset](datasets/wheat-seeds.csv)
+
 Expected Output:
 
     Expected: 0.0 Output: 0.0
@@ -102,6 +126,13 @@ Expected Output:
 ### Q Reinforcement
 
 `python qreinforcement.py`
+
+Data Used
+- Reward matrix was modelled after the image below with a goal of reaching room F.
+
+![Image Model of a house](https://people.revoledu.com/kardi/tutorial/ReinforcementLearning/image/Modeling-Environment_clip_image002.jpg)
+
+Image Source: Teknomo, Kardi. 2005. Q-Learning By Examples. https://people.revoledu.com/kardi/tutorial/ReinforcementLearning/index.html
 
 Expected Output:
 
@@ -141,6 +172,9 @@ Expected Output:
 ### Bayes
 
 `python bayes.py`
+
+Data Used: 
+- [Conditions to Play Golf](datasets/golf-play.csv)
 
 Expected Output: 
 
@@ -204,6 +238,9 @@ Expected Output:
 
 `python decision_tree.py`
 
+Data Used: 
+- [Conditions to Play Golf](datasets/golf-play.csv)
+
 Expected Output: 
 
     { "Decision": {
@@ -227,6 +264,10 @@ Expected Output:
 ### Self Organizing Maps
 
 `python som.py`
+
+Data Used: 
+- [Iris dataset](datasets/iris-data.csv)
+- [Wheat seeds dataset](datasets/wheat-seeds.csv)
 
 Expected Output: 
 
@@ -271,6 +312,10 @@ Fitness of a route is calculated using total Euclidian distance in a route norma
 is calculated using Euclidian distance between randomized cities turned into a ratio by dividing 1 by the dist
 
 `python genetic.py`
+
+Data used:
+
+- 25 cities with x and y coordinates. Coordinates are random values with a maximum value of 500.
 
 Expected Output: 
 
