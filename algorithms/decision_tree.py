@@ -1,5 +1,5 @@
 import math
-from .shared import get_csv_dataset_text
+from shared import get_csv_dataset_text
 
 
 
@@ -82,8 +82,8 @@ def _make_decision(dataset, headers, root_class_index):
         counter_keys = list(counters.keys())
         if len(counter_keys) == 1:
             final_tree[max_header][label] = counter_keys[0]
-        elif all_vals_same(counters.values()):
-            final_tree[max_header][label] = 'Unknown'
+        # elif all_vals_same(counters.values()):
+        #     final_tree[max_header][label] = 'Unknown'
         else:
             final_tree[max_header][label] = _make_decision(subset, headers, root_class_index)
 

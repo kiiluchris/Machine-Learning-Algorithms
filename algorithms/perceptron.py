@@ -1,4 +1,4 @@
-from .shared import dot_product
+from shared import dot_product
 
 
 def gradient_descent(dataset, weights):
@@ -13,11 +13,11 @@ def predict(inputs, weights):
     activation = dot_product(inputs, weights[1:]) + bias
     return float(activation >= 0.0)
 
-def train_weights(train, learning_rate, n_epoch):
-    weights = [0.0] * len(train[0])
+def train_weights(dataset, learning_rate, n_epoch):
+    weights = [0.0] * len(dataset[0])
     for epoch in range(n_epoch):
         total_error = 0.0
-        for row in train:
+        for row in dataset:
             prediction = predict(row, weights)
             error = row[-1] - prediction
             total_error += error

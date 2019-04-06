@@ -1,0 +1,50 @@
+Requirements
+Install Python3
+Install the necessary python packages
+    pip install numpy matplotlib
+
+Any graphs displayed are:
+    Error rate over time
+
+Running the code
+KNN
+python knn.py
+Expected Output: Printed on CLI
+
+KMC 
+python kmc.py
+Expected Output: Printed on CLI
+
+Perceptron
+python perceptron.py
+Expected Output: Printed on CLI
+
+Adaline
+python adaline.py
+Expected Output: Printed on CLI
+
+Backpropagation
+python backpropagation.py
+Expected Output: Printed on CLI
+
+Q Reinforcement
+python qreinforcement.py
+Expected Output: Printed on CLI
+
+Bayes
+python bayes.py
+Expected Output: Printed on CLI
+
+Decision Trees
+python decision_tree.py
+Expected Output: Printed on CLI
+
+Self Organizing Maps
+python som.py
+Expected Output: 
+    - Graph showing organized data
+    - Graph showing clusters
+
+Genetic Algorithms
+python genetic.py
+Expected Output: Graph over Error Rate over Time

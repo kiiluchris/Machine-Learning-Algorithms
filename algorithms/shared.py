@@ -1,10 +1,11 @@
 import csv
+import math
 import os
 from math import sqrt
 from functools import reduce, partial
 from pathlib import Path
 
-DATASET_DIR = Path(__file__).parent.joinpath('../datasets')
+DATASET_DIR = Path(__file__).parent.joinpath('./datasets')
 
 def transpose(*arrs): 
     return zip(*arrs)
@@ -60,3 +61,33 @@ def sigmoid(value):
     """ Transfer function converts outputs into a smaller range
         Implementation uses the sigmoid function"""
     return 1.0 / (1.0 + math.exp(-value))
+
+
+def dataset_minmax(dataset):
+    stats = [[min(column), max(column)] for column in zip(*dataset)]
+    return stats
+   
+def denormalize_row(row, minmax):
+    return [
+        denormalize_col(row[i], minmax[i])
+    for i, _ in enumerate(row) ]
+
+def denormalize_col(col, minmax_col):
+    min_, max_ = minmax_col
+    return (col * (max_ - min_)) + min_
+
+def normalize_col(col, minmax_col):
+    min_, max_ = minmax_col
+    return (col - min_) / (max_ - min_)
+
+def normalize_row(row, minmax):
+    return [
+        normalize_col(row[i], minmax[i])
+        for i, col in enumerate(row)
+    ]
+
+def normalize_dataset(dataset, minmax):
+    return [
+        normalize_row(row, minmax)
+        for row in dataset
+    ]

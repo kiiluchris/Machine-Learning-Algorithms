@@ -1,5 +1,5 @@
 import operator
-from .shared import EuclidianDist, transpose
+from shared import EuclidianDist, transpose
 
 from functools import reduce, partial
 
@@ -8,6 +8,9 @@ def map(*args):
     return list(real_map(*args))
 
 def groupsHaveChanged(oldGroups, groups):
+    """ Groups have changed if groups are both empty (just initialized) 
+        or groups have any differing values
+    """
     if not oldGroups and not groups: return True
     for old_group, group in zip(oldGroups, groups):
         if old_group != group:
@@ -15,6 +18,9 @@ def groupsHaveChanged(oldGroups, groups):
     return False
 
 def find_groups(distances):
+    """ An element is in the group with the least minimum distance 
+        A group is represented by a vector of zeros and a single one
+    """
     minIndex = distances.index(min(distances))
     vals = [0] * len(distances)
     vals[minIndex] = 1
@@ -31,6 +37,7 @@ def setup_grouper(data):
     return group_data_as_dict
 
 def new_centroids(k, vals):
+    """ New centroids generated as average of values in groups """
     groupTotals = (sum(v) for v in vals)
     return map(lambda x:  x / k, groupTotals)
 
@@ -54,18 +61,15 @@ def KMC(data, k):
     return list(groupedData)
 
 
-from .shared import wheat_seeds_csv
+from shared import get_csv_dataset
 def main():
-    datasets = [row[:-1] for row  in wheat_seeds_csv(__file__)]
-    res = KMC(datasets, 5)
-    res = KMC([
-        [2,3], 
-        [4,5],
-        [1,3],
-        [3,7]
-    ], 2)
-
-    print(res, len(res))
+    dataset = [row[:-1] for row  in get_csv_dataset('wheat-seeds')]
+    clusters = KMC(dataset, 5)
+    print("Dataset length: ", len(dataset))
+    print("Num of clusters (k):", len(clusters))
+    print("Cluster sizes")
+    for i, cluster in enumerate(clusters):
+        print(f"     Cluster {i+1} length", len(cluster))
 
 
 if __name__ == "__main__":

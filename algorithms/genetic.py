@@ -19,7 +19,7 @@ from collections import namedtuple
 from itertools import permutations, accumulate
 from operator import itemgetter
 
-from .shared import EuclidianDist
+from shared import EuclidianDist
 
 City = namedtuple('City', ['x', 'y'])
 
@@ -36,6 +36,9 @@ def calculate_total_distance(route):
     ], 0.0)
 
 def calculate_fitness(route):
+    """ For the travelling salesman problem fitness is a ratio from the distance
+        between cities in a route
+    """
     distance = calculate_total_distance(route)
     return 1 / distance
 
@@ -55,6 +58,7 @@ def init_population(population_size, cities):
 
 
 def rank_fitness(population):
+    """ Sort routes in population based on fitness """
     results = {}
     for i, route in enumerate(population):
         results[i] = calculate_fitness(route)
@@ -63,8 +67,10 @@ def rank_fitness(population):
 def selection(ranked_population, num_seeded = 2):
     """
     Get indices to use in mating pool
+    Uses the roulette wheel selection model
     """
     cumulative_sum = list(accumulate(map(itemgetter(1), ranked_population)))
+    # Sum of all fitness
     sum_ = cumulative_sum[-1]
     cumulative_pct = [100 * sub_sum / sum_ for sub_sum in cumulative_sum]
     # First get indices of seeded values
@@ -166,7 +172,7 @@ def genetic_algorithm_plot(orig_population, population_size, num_seeds, mutation
         population = gen_next_generation(population, num_seeds, mutation_rate)
         best_routes_over_time.append( 1 / rank_fitness(population)[0][1] )
     plt.plot(best_routes_over_time)
-    plt.ylabel('Distance')
+    plt.xlabel('Distance')
     plt.ylabel('Generation')
     plt.show()
 

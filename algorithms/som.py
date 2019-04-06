@@ -13,15 +13,14 @@ import json
 import math
 import random
 
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from operator import itemgetter
-from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import numpy as np
 import matplotlib.pyplot as plt
 
-from .shared import (
-    # EuclidianDist, 
+from shared import (
     ManhattanDist, 
     get_csv_dataset
 )
@@ -107,9 +106,8 @@ def construct_u_matrix(map_, rows, cols):
 
 
 def display_umatrix(u_matrix):
-    plt.figure()
+    plt.figure(1)
     plt.imshow(u_matrix, cmap='gray')
-    plt.show()
 
 def dimensionality_reduction_visualization(map_, u_matrix, data_x, data_y, rows, cols):
     mapping = np.empty(shape=(rows, cols), dtype=object)
@@ -125,10 +123,9 @@ def dimensionality_reduction_visualization(map_, u_matrix, data_x, data_y, rows,
         for j in range(cols):
             label_map[i][j] = most_common(mapping[i][j], 3)
 
-    plt.figure()
+    plt.figure(2)
     plt.imshow(label_map, cmap=plt.cm.get_cmap('terrain_r', 4))
     plt.colorbar()
-    plt.show()
 
 
 def main():
@@ -151,18 +148,17 @@ def main():
         # n_epochs=5000,
         num_inputs=4
     )
-
     u_matrix = construct_u_matrix(map_, rows, cols)
     display_umatrix(u_matrix)
     dimensionality_reduction_visualization(map_, u_matrix, data_x, data_y, rows, cols)
+    plt.show()
+
     # with ThreadPoolExecutor(max_workers=2) as pool:
     #     tasks = [
     #         pool.submit(display_umatrix, u_matrix),
     #         pool.submit(dimensionality_reduction_visualization, map_, u_matrix, data_x, data_y, rows, cols)
     #     ]
     #     for f in as_completed(tasks):
-    #         f.result()
-
-
+    #         f.result()    
 if __name__ == "__main__":
     main()
