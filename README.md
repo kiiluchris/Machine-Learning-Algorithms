@@ -20,6 +20,8 @@ Source: [Github](https://github.com/kiiluchris/Machine-Learning-Algorithms)
 
 Change directory to algorithms
 
+    cd algorithms
+
 Run one of the algorithms using python
 
 ### K Nearest Neighbour (KNN)
